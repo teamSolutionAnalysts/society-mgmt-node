@@ -340,6 +340,36 @@ router.delete('/vehicle/:id', (req, res) => {
 		res.status(500).json({ 'error': 'Internale server error' });
 	}
 });
+
+router.put('/vehicle/:id', (req, res) => {
+	logger.info(req.body);
+	const body = req.body;
+
+	try {
+		if (!req.headers['authorization']) {
+			res.status(403).json({
+				'error': 'Missing auth token!'
+			})
+		}
+		if (req.headers['authorization'] == 'JWT UNJMAUTHTOKEN') {
+			res.status(401).json({
+				'error': 'Invalid or Expired token'
+			})
+		} else {
+			if (req.params['id'] == '_nv5q2nNrYqGUxgWHyhTdhf7Q') {
+				res.status(400).json({
+					'error': 'Vehicle you are trying to Update is not exist.'
+				})
+			} else {
+				res.json({
+					'msg': 'Vehicle updated successfully!... Cool!'
+				})
+			}
+		}
+	} catch (e) {
+		res.status(500).json({ 'error': 'Internale server error' });
+	}
+});
 logger.info('Starting the server');
 
 var server = app.listen(3000, function () {
